@@ -64,12 +64,9 @@ class ApiInstallCommand extends Command
         }
 
         if ($this->option('passport')) {
-            Process::run(array_filter([
-                (new PhpExecutableFinder())->find(false) ?: 'php',
-                defined('ARTISAN_BINARY') ? ARTISAN_BINARY : 'artisan',
-                'passport:install',
-                $this->confirm('Would you like to use UUIDs for all client IDs?') ? '--uuids' : null,
-            ]));
+            $this->call('passport:install', [
+                '--uuids' => $this->confirm('Would you like to use UUIDs for all client IDs?'),
+            ]);
 
             $this->components->info('API scaffolding installed. Please add the [Laravel\Passport\HasApiTokens] trait to your User model.');
         } else {
